@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handleliste</title>
+    <style>
+        html {
+            display: flex;
+        }
+
+        body {
+            margin: auto;
+            margin-top: 25px;
+        }
+
+        #flashInfo {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 1.5em;
+            color: #666;
+            justify-content: center;
+            margin-top: 0;
+            margin-left: 43px;
+            position: absolute;
+            transition: opacity 0.35s linear 0s;
+            opacity: 0;
+        }
+
+        h1 {
+            font-size: 60px;
+            letter-spacing: 1px;
+            text-shadow: 0 0.05rem 0.1rem rgba(149, 211, 149, 1);
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+            font-weight: 200;
+            margin-bottom: 15px;
+        }
+
+        #printDiv {
+            text-align: center;
+        }
+
+        #printBtn {
+            background-color: rgb(211, 211, 255);
+            font-size: 14px;
+            border-radius: 10px;
+            padding: 12px 15px;
+            justify-content: center;
+            margin-bottom: 25px;
+            border: none;
+            transition: opacity 0.35s linear 0s;
+        }
+
+        #printBtn:active {
+            background-color: rgba(211, 211, 255, 0.8);
+        }
+
+        #deleteListBtn {
+            background-color: rgb(251, 173, 173);
+            font-size: 14px;
+            border-radius: 10px;
+            padding: 12px 15px;
+            justify-content: center;
+            margin-bottom: 25px;
+            border: none;
+            transition: opacity 0.35s linear 0s;
+        }
+
+        #deleteListBtn:active {
+            background-color: rgba(251, 173, 173, 0.8);
+        }
+
+        input {
+            border: none;
+            border-radius: 10px 0 0 10px;
+            box-shadow: 0 1px 6px 0 rgba(32, 33, 36, .35);
+            font-size: 1.5em;
+            padding: 15px 5px 15px 15px;
+            width: 270px;
+        }
+
+        #buttonAdd {
+            font-size: 1.5em;
+            padding: 15px 11px;
+            background-color: rgba(149, 211, 149, 1);
+            border-radius: 0 10px 10px 0;
+            border: none;
+            box-shadow: 0 1px 6px 0 rgba(32, 33, 36, .35);
+        }
+
+        #buttonAdd:active {
+            background-color: rgba(149, 211, 149, 0.8);
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #666;
+            opacity: 0;
+            transition: opacity 0.35s linear 0s;
+        }
+
+        @keyframes fadein {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        li {
+            animation: 0.55s linear fadein;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+            transition: opacity 0.35s linear 0s;
+        }
+
+        li button {
+            padding: 8px 14px;
+            font-size: 10px;
+            margin-left: 20px;
+            border-radius: 10px;
+            border: none;
+            background-color: rgb(251, 173, 173);
+        }
+
+        li button:active {
+            background-color: rgba(251, 173, 173, 0.8);
+        }
+
+        li button:hover,
+        #buttonAdd:hover,
+        #printBtn:hover,
+        #deleteListBtn {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <em id="flashInfo"></em>
+    <h1>Handleliste</h1>
+    <div id="printDiv">
+        <button id="printBtn">Print</button>
+        <button id="deleteListBtn">Nullstill</button>
+    </div>
+    <div>
+        <input type="text" name="item" id="item" placeholder="Produkt..">
+        <button id="buttonAdd">Legg til</button>
+    </div>
+    <h4></h4>
+    <ul>
+    </ul>
+
+    <script>
+        const buttonAdd = document.querySelector("#buttonAdd");
+        const printBtn = document.querySelector("#printBtn");
+        const deleteListBtn = document.querySelector("#deleteListBtn")
+        const input = document.querySelector("#item");
+        const ul = document.querySelector("ul");
+        const counter = document.querySelector("h4");
+        const flashInfo = document.querySelector("#flashInfo");
+
+
+        // Disabled when list is empty
+        printBtn.disabled = true;
+        deleteListBtn.disabled = true;
+
+        // how long the flashInfo text is displayed when adding or deleting list items
+        const timeoutTime = 1250;
+
+        // array checking for duplicates
+        let productArr = [];
+
+        // Saving list/items to localStorage:
+        const save = () => {
+            localStorage.setItem("list", JSON.stringify(productArr));
+        };
+
+        // updating h4 with number of items in the list:
+        function listCount() {
+            productArr.length === 1 ? counter.textContent = `Det er ett produkt i listen:`
+                : counter.textContent = `Det er ${productArr.length} produkter i listen:`;
+        };
+
+        // fade in/out counter and flashInfo elements (h4, em) in the list
+        // the function also governs print and deleteListBtn enabling:
+        function fadeEnabler(element, item, text) {
+            if (element === counter) {
+                if (productArr.length >= 1) {
+                    // fade in/enable selected elements when the first product is added to the list
+                    element.style.opacity = 1;
+                    deleteListBtn.disabled = false;
+                    printBtn.disabled = false;
+                } else {
+                    // fade out/disable selected elements when the list is empty; from > 0 to 0.
+                    element.style.opacity = 0;
+                    deleteListBtn.disabled = true;
+                    printBtn.disabled = true;
+                };
+            }
+            else if (element === flashInfo) {
+                // fade in
+                element.textContent = `"${item}" ${text} listen`;
+                element.style.opacity = 0.8;
+                // fade out:
+                setTimeout(() => {
+                    element.style.opacity = 0;
+                }, timeoutTime);
+            };
+        };
+
+        function presentList(inputData) {
+            if (inputData.length && typeof inputData === "string") {
+                const itemAdded = inputData[0].toUpperCase().concat(inputData.substring(1).toLowerCase());
+                if (productArr.includes(itemAdded)) {
+                    alert(`"${itemAdded}" er allerede i listen!`);
+                    input.focus();
+                    return;
+                };
+                productArr.push(itemAdded);
+                save();
+                fadeEnabler(flashInfo, itemAdded, "lagt til");
+            };
+            if (localStorage.getItem("list") && localStorage.getItem("list").length > 2) {
+                while (ul.firstChild) {
+                    ul.removeChild(ul.firstChild);
+                };
+                // Push data from localStorage into productArr (array)
+                productArr = JSON.parse(localStorage.getItem("list"));
+                // Informs the user about number of items in the list +
+                // enables printBtn and deleteListBtn (governed by counter state)
+                fadeEnabler(counter);
+                // counter (h4) opacity = 1 if there is products in the list:
+                listCount();
+                productArr.forEach(item => {
+                    const span = document.createElement("span");
+                    span.textContent = item;
+                    const li = document.createElement("li");
+                    const deleteButton = document.createElement("button");
+                    deleteButton.textContent = "Slett";
+                    li.append(span, deleteButton);
+                    ul.appendChild(li);
+                    deleteButton.addEventListener("click", () => {
+                        const itemDeleted = span.textContent;
+                        // fade in/out (slett): 
+                        fadeEnabler(flashInfo, itemDeleted, "fjernet fra");
+                        const index = productArr.indexOf(itemDeleted);
+                        // delete item from productArr:
+                        if (index > -1) {
+                            productArr.splice(index, 1);
+                            localStorage.setItem("list", JSON.stringify(productArr));
+                        };
+                        li.style.opacity = 0;
+                        setTimeout(() => {
+                            li.remove();
+                        }, 550);
+                        if (productArr.length === 0) {
+                            // fades out counter when the all elements in the list is removed:
+                            fadeEnabler(counter);
+                        } else listCount();
+
+                    });
+                });
+            };
+        };
+
+        // Collects data from localStorage, if any, and present it in the browser
+        window.addEventListener("DOMContentLoaded", presentList);
+
+        buttonAdd.addEventListener("click", () => {
+            if (input.value.trim().length) {
+                const inputData = input.value.trim();
+                presentList(inputData);
+            };
+            input.value = ""
+            input.focus();
+        });
+
+        printBtn.addEventListener("click", () => {
+            window.print();
+        });
+
+        // Delete list data from page; localStorage and productArr
+        deleteListBtn.addEventListener("click", () => {
+            let userComply = confirm('Er du sikker på at du vil nullstille listen?');
+            if (userComply) {
+                localStorage.clear();
+                productArr = [];
+                ul.innerHTML = null;
+                counter.textContent = "";
+                fadeEnabler(counter);
+            };
+        });
+
+    </script>
+</body>
+
+</html>
