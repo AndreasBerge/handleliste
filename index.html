@@ -13,7 +13,7 @@
         body {
             margin: auto;
             margin-top: 25px;
-            max-width: 100vw;
+            width: 60vw;
             overflow-wrap: break-word;
         }
 
@@ -28,7 +28,7 @@
             transition: opacity 0.35s linear 0s;
             opacity: 0;
             overflow-wrap: break-word;
-            margin-right: 10;
+            margin-right: 10px;
             max-width: 320px;
         }
 
@@ -86,7 +86,7 @@
             box-shadow: 0 1px 6px 0 rgba(32, 33, 36, .35);
             font-size: 1.5em;
             padding: 15px 5px 15px 15px;
-            max-width: 270px;
+            /* max-width: 270px; */
         }
 
         #buttonAdd {
@@ -128,10 +128,6 @@
             transition: opacity 0.35s linear 0s;
         }
 
-        span {
-            max-width: 420px;
-        }
-
         li button {
             padding: 8px 14px;
             font-size: 10px;
@@ -152,13 +148,30 @@
             cursor: pointer;
         }
 
+        @media (max-width: 600px) {
+            input {
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            body {
+                width: 100vw;
+            }
+
+            input {
+                width: 270px;
+            }
+        }
+
         @media (max-width: 400px) {
             #flashInfo {
                 margin-left: 30px;
             }
 
             input {
-                max-width: 230px;
+                /* width: 245px; */
+                width: 64%;
             }
         }
 
@@ -168,12 +181,12 @@
             }
 
             #flashInfo {
-                max-width: 250px;
+                max-width: 270px;
                 margin-left: 10px;
             }
 
             input {
-                max-width: 130px;
+                width: 145px;
             }
         }
     </style>
