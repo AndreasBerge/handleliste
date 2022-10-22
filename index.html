@@ -13,7 +13,7 @@
         body {
             margin: auto;
             margin-top: 25px;
-            width: 65vw;
+            width: 500px;
             overflow-wrap: break-word;
         }
 
@@ -22,14 +22,13 @@
             font-size: 1.5em;
             color: #666;
             justify-content: center;
-            margin-top: 0;
-            margin-left: 43px;
             position: absolute;
             transition: opacity 0.35s linear 0s;
             opacity: 0;
             overflow-wrap: break-word;
-            margin-right: 10px;
-            max-width: 60vw;
+            margin-top: 0;
+            margin-left: 50px;
+            max-width: 420px;
         }
 
         h1 {
@@ -81,7 +80,7 @@
         }
 
         input {
-            border: none;
+            border: transparent;
             border-radius: 10px 0 0 10px;
             box-shadow: 0 1px 6px 0 rgba(32, 33, 36, .35);
             font-size: 1.5em;
@@ -147,24 +146,21 @@
             cursor: pointer;
         }
 
-        @media (max-width: 600px) {
-            input {
-                width: 200px;
-            }
-        }
-
         @media (max-width: 420px) {
             body {
                 width: 100vw;
+            }
+
+            #flashInfo {
+                max-width: 320px;
+                margin-left: 50px;
+                margin-right: 10px;
             }
 
             input {
                 width: 270px;
             }
 
-            #flashInfo {
-                max-width: 320px;
-            }
         }
 
         @media (max-width: 400px) {
@@ -177,18 +173,54 @@
             }
         }
 
+        @media (max-width: 350px) {
+            h1 {
+                font-size: 55px;
+            }
+
+            input {
+                width: 58%;
+            }
+
+        }
+
         @media (max-width: 300px) {
+            #flashInfo {
+                max-width: 270px;
+                margin-left: 15px;
+            }
+
             h1 {
                 font-size: 50px;
             }
 
+            input {
+                width: 145px;
+            }
+        }
+
+        @media (max-width: 269px) {
+
             #flashInfo {
-                max-width: 270px;
-                margin-left: 10px;
+                font-size: medium;
+            }
+
+            h1 {
+                font-size: 40px;
+            }
+
+            #buttonAdd,
+            h4 {
+                font-size: 1em;
             }
 
             input {
-                width: 145px;
+                font-size: 1em;
+                width: 50%;
+            }
+
+            span {
+                font-size: 0.75em;
             }
         }
     </style>
