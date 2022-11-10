@@ -256,6 +256,9 @@
         const counter = document.querySelector("h4");
         const flashInfo = document.querySelector("#flashInfo");
 
+        window.addEventListener('offline', () => {
+            alert("Du er frakoblet internett, koble til for å bruke appen!");
+        });
 
         // Disabled when list is empty
         printBtn.disabled = true;
@@ -304,7 +307,7 @@
                 }, timeoutTime);
             };
         };
-
+        // Function for displaying data in HTML (++).
         function presentList(inputData) {
             if (inputData.length && typeof inputData === "string") {
                 const itemAdded = inputData[0].toUpperCase().concat(inputData.substring(1).toLowerCase());
@@ -323,10 +326,9 @@
                 };
                 // Push data from localStorage into productArr (array)
                 productArr = JSON.parse(localStorage.getItem("list"));
-                // Informs the user about number of items in the list +
-                // enables printBtn and deleteListBtn (governed by counter state)
+                // Enables printBtn and deleteListBtn (governed by counter state).
                 fadeEnabler(counter);
-                // counter (h4) opacity = 1 if there is products in the list:
+                // Presents amount of products in list (h4/counter). If zero, opacity is set to 0 by fadeEnabler; otherwise opacity = 1.
                 listCount();
                 productArr.forEach(item => {
                     const span = document.createElement("span");
@@ -363,6 +365,7 @@
         // Collects data from localStorage, if any, and present it in the browser
         window.addEventListener("DOMContentLoaded", presentList);
 
+        // Button for pushing products into the list
         buttonAdd.addEventListener("click", () => {
             if (input.value.trim().length) {
                 const inputData = input.value.trim();
@@ -372,6 +375,7 @@
             input.focus();
         });
 
+        // Button for printing list to .pdf - useful for backup and sharing purposes
         printBtn.addEventListener("click", () => {
             window.print();
         });
