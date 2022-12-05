@@ -256,9 +256,10 @@
         const counter = document.querySelector("h4");
         const flashInfo = document.querySelector("#flashInfo");
 
-        window.addEventListener('offline', () => {
-            alert("Du er frakoblet internett, koble til for å bruke appen!");
-        });
+        // offline listener:
+        // window.addEventListener('offline', () => {
+        //     alert("Du er frakoblet internett, koble til for å bruke appen!");
+        // });
 
         // Disabled when list is empty
         printBtn.disabled = true;
