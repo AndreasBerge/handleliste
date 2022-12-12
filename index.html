@@ -8,6 +8,7 @@
     <style>
         html {
             display: flex;
+            height: 100vh;
         }
 
         body {
@@ -16,6 +17,12 @@
             width: 500px;
             overflow-wrap: break-word;
             background-color: rgba(240, 246, 255, 0.8);
+        }
+
+        .bodyXmasTheme {
+            background-image: url("superkitina-2WahuW8qdRo-unsplash.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
         }
 
         #flashInfo {
@@ -154,6 +161,7 @@
         @media (max-width: 420px) {
             body {
                 width: 100vw;
+                background-size: 100% 100%;
             }
 
             #flashInfo {
@@ -255,11 +263,25 @@
         const ul = document.querySelector("ul");
         const counter = document.querySelector("h4");
         const flashInfo = document.querySelector("#flashInfo");
+        const body = document.querySelector("body");
 
         // offline listener:
         // window.addEventListener('offline', () => {
         //     alert("Du er frakoblet internett, koble til for å bruke appen!");
         // });
+        const dateObj = {
+            dateNow: new Date,
+            themeDate() { return Number(this.dateNow.toLocaleDateString().split(".").join("").substring(0, 4)) }
+        }
+
+        function xmasTheme(date) {
+            if (date > 1120) {
+                body.classList.add("bodyXmasTheme");
+            } else body.classList.remove("bodyXmasTheme");
+        }
+
+        xmasTheme(dateObj.themeDate())
+
 
         // Disabled when list is empty
         printBtn.disabled = true;
