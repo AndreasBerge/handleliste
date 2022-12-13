@@ -271,19 +271,20 @@
         // window.addEventListener('offline', () => {
         //     alert("Du er frakoblet internett, koble til for å bruke appen!");
         // });
+
         const dateObj = {
             dateNow: new Date,
-            themeDate() { return Number(this.dateNow.toLocaleDateString().split(".").join("").substring(0, 4)) }
+            themeDate() { return this.dateNow.getMonth() + 1 }
         }
 
-        function xmasTheme(date) {
-            if (date > 1120) {
+        // change theme in december
+        function xmasTheme(month) {
+            if (month === 12) {
                 body.classList.add("bodyXmasTheme");
             } else body.classList.remove("bodyXmasTheme");
         }
 
-        xmasTheme(dateObj.themeDate())
-
+        xmasTheme(dateObj.themeDate());
 
         // Disabled when list is empty
         printBtn.disabled = true;
